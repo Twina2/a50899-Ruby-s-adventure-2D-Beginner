@@ -1,4 +1,6 @@
-﻿using UnityEngine;
+﻿using System.Collections;
+using System.Collections.Generic;
+using UnityEngine;
 
 /// <summary>
 /// Handle the projectile launched by the player to fix the robots.
@@ -27,7 +29,7 @@ public class Projectile : MonoBehaviour
 
     void OnCollisionEnter2D(Collision2D other)
     {
-        Enemy e = other.collider.GetComponent<Enemy>();
+        EnemyController e = other.collider.GetComponent<EnemyController>();
 
         //if the object we touched wasn't an enemy, just destroy the projectile.
         if (e != null)
