@@ -2,17 +2,17 @@
 using System.Collections.Generic;
 using UnityEngine;
 
-public class RubysController : MonoBehaviour
+public class RubyController : MonoBehaviour
 {
     public float speed = 3.0f;
 
     public int maxHealth = 5;
-   
+
     public GameObject projectilePrefab;
 
     public int health { get { return currentHealth; } }
     int currentHealth;
-    
+
     public float timeInvincible = 2.0f;
     bool isInvincible;
     float invincibleTimer;
@@ -24,13 +24,11 @@ public class RubysController : MonoBehaviour
     Animator animator;
     Vector2 lookDirection = new Vector2(1, 0);
 
-
     // Start is called before the first frame update
     void Start()
     {
-        animator = GetComponent<Animator>();
-
         rigidbody2d = GetComponent<Rigidbody2D>();
+        animator = GetComponent<Animator>();
 
         currentHealth = maxHealth;
     }
@@ -53,7 +51,6 @@ public class RubysController : MonoBehaviour
         animator.SetFloat("Look Y", lookDirection.y);
         animator.SetFloat("Speed", move.magnitude);
 
-
         if (isInvincible)
         {
             invincibleTimer -= Time.deltaTime;
@@ -70,17 +67,16 @@ public class RubysController : MonoBehaviour
     void FixedUpdate()
     {
         Vector2 position = rigidbody2d.position;
-        position.x = position.x + 3.0f * horizontal * Time.deltaTime;
-        position.y = position.y + 3.0f * vertical * Time.deltaTime;
+        position.x = position.x + speed * horizontal * Time.deltaTime;
+        position.y = position.y + speed * vertical * Time.deltaTime;
 
         rigidbody2d.MovePosition(position);
     }
 
-    void ChangeHealth(int amount)
+    public void ChangeHealth(int amount)
     {
         if (amount < 0)
         {
-            animator.SetTrigger("Hit");
             if (isInvincible)
                 return;
 
@@ -89,7 +85,8 @@ public class RubysController : MonoBehaviour
         }
 
         currentHealth = Mathf.Clamp(currentHealth + amount, 0, maxHealth);
-        Debug.Log(currentHealth + "/" + maxHealth);
+
+        UIHealthBar.instance.SetValue(currentHealth / (float)maxHealth);
     }
 
     void Launch()
@@ -99,7 +96,6 @@ public class RubysController : MonoBehaviour
         Projectile projectile = projectileObject.GetComponent<Projectile>();
         projectile.Launch(lookDirection, 300);
 
-        animator.SetTrigger("Launching");
+        animator.SetTrigger("Launch");
     }
-
 }
