@@ -68,7 +68,7 @@ public class Enemy : MonoBehaviour
 		if(repaired)
 			return;
 		
-		RubyController controller = other.collider.GetComponent<RubyController>();
+		RubysController controller = other.collider.GetComponent<RubysController>();
 		
 		if(controller != null)
 			controller.ChangeHealth(-1);
